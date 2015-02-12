@@ -25,16 +25,7 @@ namespace ImageDiff
         {
             if (options == null)
             {
-                options = new CompareOptions
-                {
-                    Labeler = LabelerTypes.Basic,
-                    JustNoticeableDifference = 2.3,
-                    DetectionPadding = 2,
-                    BoundingBoxPadding = 2,
-                    BoundingBoxColor = Color.Red,
-                    BoundingBoxMode = BoundingBoxModes.Single,
-                    AnalyzerType = AnalyzerTypes.ExactMatch
-                };
+                options = new CompareOptions();
             }
             Initialize(options);
 
