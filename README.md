@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/qg5rrd1rc1ioetum?svg=true)](https://ci.appveyor.com/project/RichClement/imagediff)
+
 ImageDiff
 ==========
 
