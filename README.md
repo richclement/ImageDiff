@@ -11,7 +11,10 @@ ImageDiff has three stages to its processing.
 2. Detect and label the differences between the images.
 3. Build the bounding boxes for the identified blobs.
 
-After processing is finished, it will generate a new image which is derived from the second image provided to the `Compare` method. This `diff` image will contain highlighted bounding boxes around the differences between the two images.   
+After processing is finished, it will generate a new image which is derived from the second image provided to the `Compare` method. This `diff` image will contain highlighted bounding boxes around the differences between the two images.
+
+![first image](/docs/images/firstImage.png) compared to ![second image](/docs/images/secondImage.png) produces 
+![image diff](/docs/images/diffImage.png)
 
 Usage
 -----
