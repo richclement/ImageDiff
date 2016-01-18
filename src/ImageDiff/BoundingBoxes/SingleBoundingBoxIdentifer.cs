@@ -18,6 +18,9 @@ namespace ImageDiff.BoundingBoxes
         {
             var points = FindLabeledPoints(labelMap);
 
+            if (!points.Any())
+                return new List<Rectangle>();
+
             var minPoint = new Point(points.Min(x => x.X), points.Min(y => y.Y));
             var maxPoint = new Point(points.Max(x => x.X), points.Max(y => y.Y));
 

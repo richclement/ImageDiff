@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using ImageDiff.Analyzers;
 using ImageDiff.BoundingBoxes;
 using ImageDiff.Labelers;
@@ -66,10 +67,14 @@ namespace ImageDiff
             var differenceBitmap = secondImage.Clone() as Bitmap;
             if (differenceBitmap == null) throw new Exception("Could not copy secondImage");
 
+            var boundingRectangles = boundingBoxes.ToArray();
+            if (boundingRectangles.Length == 0)
+                return differenceBitmap;
+
             using (var g = Graphics.FromImage(differenceBitmap))
             {
                 var pen = new Pen(BoundingBoxColor);
-                foreach (var boundingRectangle in boundingBoxes)
+                foreach (var boundingRectangle in boundingRectangles)
                 {
                     g.DrawRectangle(pen, boundingRectangle);
                 }

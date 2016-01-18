@@ -90,7 +90,7 @@ namespace ImageDiffTests
             var result = target.Compare(FirstImage, SecondImage);
             result.Save(string.Format(OutputFormat, "CompareWorksWithNullOptions"), SecondImage.RawFormat);
         }
-        
+
         [Test]
         public void CompareWorksWithNullOptions()
         {
@@ -98,6 +98,28 @@ namespace ImageDiffTests
             var result = target.Compare(FirstImage, SecondImage);
             result.Save(string.Format(OutputFormat, "CompareWorksWithNullOptions"), SecondImage.RawFormat);
         }
+
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        public void CompareWorksWithIdenticalImages(AnalyzerTypes aType, BoundingBoxModes bMode, LabelerTypes lType)
+        {
+            var target = new BitmapComparer(new CompareOptions
+            {
+                AnalyzerType = aType,
+                BoundingBoxMode = bMode,
+                Labeler = lType
+            });
+            var result = target.Compare(FirstImage, FirstImage);
+            result.Save(string.Format(OutputFormat, string.Format("CompareWorksWithIdenticalImages_{0}_{1}_{2}", aType, bMode, lType)),
+                SecondImage.RawFormat);
+        }
+
 
         [Test]
         public void ExactMatch_BasicLabeling_SingleBox()
