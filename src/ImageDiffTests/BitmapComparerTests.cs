@@ -121,133 +121,143 @@ namespace ImageDiffTests
         }
 
 
-        [Test]
-        public void ExactMatch_BasicLabeling_SingleBox()
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        public void CompareWorksWithDifferentImages(AnalyzerTypes aType, BoundingBoxModes bMode, LabelerTypes lType)
         {
             var target = new BitmapComparer(new CompareOptions
             {
                 BoundingBoxColor = Color.Red,
-                BoundingBoxMode = BoundingBoxModes.Single,
-                AnalyzerType = AnalyzerTypes.ExactMatch,
+                BoundingBoxMode = bMode,
+                AnalyzerType = aType,
                 DetectionPadding = 2,
                 BoundingBoxPadding = 2,
-                Labeler = LabelerTypes.Basic
+                Labeler = lType
             });
             var result = target.Compare(FirstImage, SecondImage);
-            result.Save(string.Format(OutputFormat, "ExactMatch_BasicLabeling_SingleBox"), SecondImage.RawFormat);
+            result.Save(string.Format(OutputFormat, string.Format("CompareWorksWithDifferentImages_{0}_{1}_{2}", aType, bMode, lType)), SecondImage.RawFormat);
         }
 
-        [Test]
-        public void ExactMatch_ConnectedComponentLabeling_SingleBox()
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        public void EqualsReturnsTrueWithSameImage(AnalyzerTypes aType, BoundingBoxModes bMode, LabelerTypes lType)
         {
             var target = new BitmapComparer(new CompareOptions
             {
                 BoundingBoxColor = Color.Red,
-                BoundingBoxMode = BoundingBoxModes.Single,
-                AnalyzerType = AnalyzerTypes.ExactMatch,
+                BoundingBoxMode = bMode,
+                AnalyzerType = aType,
                 DetectionPadding = 2,
                 BoundingBoxPadding = 2,
-                Labeler = LabelerTypes.ConnectedComponentLabeling
+                Labeler = lType
             });
-            var result = target.Compare(FirstImage, SecondImage);
-            result.Save(string.Format(OutputFormat, "ExactMatch_ConnectedComponentLabeling_SingleBox"), SecondImage.RawFormat);
+            var newInstanceOfFirstImage = new Bitmap(TestImage1);
+            var result = target.Equals(FirstImage, newInstanceOfFirstImage);
+            Assert.IsTrue(result);
         }
 
-        [Test]
-        public void ExactMatch_ConnectedComponentLabeling_MultipleBox()
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        public void EqualsReturnsFalseWithDifferentImage(AnalyzerTypes aType, BoundingBoxModes bMode, LabelerTypes lType)
         {
             var target = new BitmapComparer(new CompareOptions
             {
                 BoundingBoxColor = Color.Red,
-                BoundingBoxMode = BoundingBoxModes.Multiple,
-                AnalyzerType = AnalyzerTypes.ExactMatch,
+                BoundingBoxMode = bMode,
+                AnalyzerType = aType,
                 DetectionPadding = 2,
                 BoundingBoxPadding = 2,
-                Labeler = LabelerTypes.ConnectedComponentLabeling
+                Labeler = lType
             });
-            var result = target.Compare(FirstImage, SecondImage);
-            result.Save(string.Format(OutputFormat, "ExactMatch_ConnectedComponentLabeling_MultipleBox"), SecondImage.RawFormat);
+            var result = target.Equals(FirstImage, SecondImage);
+            Assert.IsFalse(result);
         }
 
-        [Test]
-        public void ExactMatch_BasicLabeling_MultipleBox()
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        public void EqualsReturnsTrueWithNullImages(AnalyzerTypes aType, BoundingBoxModes bMode, LabelerTypes lType)
         {
             var target = new BitmapComparer(new CompareOptions
             {
                 BoundingBoxColor = Color.Red,
-                BoundingBoxMode = BoundingBoxModes.Multiple,
-                AnalyzerType = AnalyzerTypes.ExactMatch,
+                BoundingBoxMode = bMode,
+                AnalyzerType = aType,
                 DetectionPadding = 2,
                 BoundingBoxPadding = 2,
-                Labeler = LabelerTypes.Basic
+                Labeler = lType
             });
-            var result = target.Compare(FirstImage, SecondImage);
-            result.Save(string.Format(OutputFormat, "ExactMatch_BasicLabeling_MultipleBox"), SecondImage.RawFormat);
+            var result = target.Equals(null, null);
+            Assert.IsTrue(result);
         }
 
-        [Test]
-        public void CIE76JND_BasicLabeling_MultipleBox()
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        public void EqualsReturnsFalseWithNullFirstImage(AnalyzerTypes aType, BoundingBoxModes bMode, LabelerTypes lType)
         {
             var target = new BitmapComparer(new CompareOptions
             {
                 BoundingBoxColor = Color.Red,
-                BoundingBoxMode = BoundingBoxModes.Multiple,
-                AnalyzerType = AnalyzerTypes.CIE76,
+                BoundingBoxMode = bMode,
+                AnalyzerType = aType,
                 DetectionPadding = 2,
                 BoundingBoxPadding = 2,
-                Labeler = LabelerTypes.Basic
+                Labeler = lType
             });
-            var result = target.Compare(FirstImage, SecondImage);
-            result.Save(string.Format(OutputFormat, "CIE76JND_BasicLabeling_MultipleBox"), SecondImage.RawFormat);
+            var result = target.Equals(null, SecondImage);
+            Assert.IsFalse(result);
         }
 
-        [Test]
-        public void CIE76JND_ConnectedComponentLabeling_MultipleBox()
-        {
-            var target = new BitmapComparer(new CompareOptions
-            {
-                BoundingBoxColor = Color.Green,
-                BoundingBoxMode = BoundingBoxModes.Multiple,
-                AnalyzerType = AnalyzerTypes.CIE76,
-                DetectionPadding = 2,
-                BoundingBoxPadding = 2,
-                Labeler = LabelerTypes.ConnectedComponentLabeling
-            });
-            var result = target.Compare(FirstImage, SecondImage);
-            result.Save(string.Format(OutputFormat, "CIE76JND_ConnectedComponentLabeling_MultipleBox"), SecondImage.RawFormat);
-        }
-
-        [Test]
-        public void CIE76JND_BasicLabeling_SingleBox()
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.CIE76, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Single, LabelerTypes.ConnectedComponentLabeling)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.Basic)]
+        [TestCase(AnalyzerTypes.ExactMatch, BoundingBoxModes.Multiple, LabelerTypes.ConnectedComponentLabeling)]
+        public void EqualsReturnsFalseWithNullSecondImage(AnalyzerTypes aType, BoundingBoxModes bMode, LabelerTypes lType)
         {
             var target = new BitmapComparer(new CompareOptions
             {
                 BoundingBoxColor = Color.Red,
-                BoundingBoxMode = BoundingBoxModes.Single,
-                AnalyzerType = AnalyzerTypes.CIE76,
+                BoundingBoxMode = bMode,
+                AnalyzerType = aType,
                 DetectionPadding = 2,
                 BoundingBoxPadding = 2,
-                Labeler = LabelerTypes.Basic
+                Labeler = lType
             });
-            var result = target.Compare(FirstImage, SecondImage);
-            result.Save(string.Format(OutputFormat, "CIE76JND_BasicLabeling_SingleBox"), SecondImage.RawFormat);
+            var result = target.Equals(FirstImage, null);
+            Assert.IsFalse(result);
         }
-
-        [Test]
-        public void CIE76JND_ConnectedComponentLabeling_SingleBox()
-        {
-            var target = new BitmapComparer(new CompareOptions
-            {
-                BoundingBoxColor = Color.Red,
-                BoundingBoxMode = BoundingBoxModes.Single,
-                AnalyzerType = AnalyzerTypes.CIE76,
-                DetectionPadding = 2,
-                BoundingBoxPadding = 2,
-                Labeler = LabelerTypes.ConnectedComponentLabeling
-            });
-            var result = target.Compare(FirstImage, SecondImage);
-            result.Save(string.Format(OutputFormat, "CIE76JND_ConnectedComponentLabeling_SingleBox"), SecondImage.RawFormat);
-        }
-
     }
 }
